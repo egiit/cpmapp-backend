@@ -23,13 +23,15 @@ export const Login = async (req, res) => {
         .json({ message: 'User Name or Password Incorrect' });
     const userId = user.USER_ID;
     const username = user.USER_NAME;
+    const userLevel = user.USER_LEVEL;
+    const userDept = user.USER_DEP;
     const accessToken = jwt.sign(
-      { userId, username },
+      { userId, username, userLevel, userDept },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '20s' }
     );
     const refreshToken = jwt.sign(
-      { userId, username },
+      { userId, username, userLevel, userDept },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: '1d' }
     );

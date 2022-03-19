@@ -35,12 +35,12 @@ async () => {
   }
 };
 
-var whitelist = [
-  'http://192.168.57.150:3000',
-  'http://localhost:3000',
-  'http://192.168.10.67:3000',
-];
 // app.use(cors());
+var whitelist = [
+  'http://192.168.10.105:3000',
+  'http://localhost:3000',
+  'http://117.74.123.238/:3000',
+];
 app.use(
   cors({
     credentials: true,
@@ -53,7 +53,7 @@ app.use(
     },
   })
 );
-// app.use(cors({ origin: '*' }));
+
 app.use(cookieParser());
 app.use(express.json());
 // app.use(session(sesionOptions));

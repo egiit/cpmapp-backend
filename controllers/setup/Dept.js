@@ -1,8 +1,15 @@
 import Dept from '../../models/dept.js';
 
-const getDept = async (req, res) => {
+export const getDept = async (req, res) => {
   const depts = await Dept.findAll();
   res.json(depts);
 };
 
-export default getDept;
+export const getDeptById = async (req, res) => {
+  const depts = await Dept.findAll({
+    where: {
+      DEP_ID: req.params.id,
+    },
+  });
+  res.json(depts[0]);
+};

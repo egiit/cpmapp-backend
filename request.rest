@@ -18,11 +18,12 @@ GET http://localhost:3001/user/1
 ###
 
 ###
-GET http://localhost:3001/dept
+GET http://localhost:3001/dept/1
 
 ###
 GET http://localhost:3001/menu
 ###
+
 
 
 POST http://localhost:3001/user
@@ -111,3 +112,102 @@ Content-Type: application/json
 # "USER_ID": 2
 # }
 
+
+###
+GET http://localhost:3001/header/30/
+
+###
+POST  http://localhost:3001/header
+Content-Type: application/json
+
+{
+    "header_prod_date": "2022-03-09",
+    "header_shift": 2,
+    "header_operator": "maman,jajang,dadang",
+    "header_leader": "monang",
+    "header_dept_id": 2,
+    "header_add_id": 2
+}
+###
+PATCH   http://localhost:3001/header/31
+Content-Type: application/json
+
+{
+    "header_prod_date": "2022-03-09",
+    "header_shift": 2,
+    "header_operator": "sumin,jajang,dadang",
+    "header_leader": "monang",
+    "header_dept_id": 2,
+    "header_add_id": 2
+}
+
+###
+GET http://localhost:3001/header/90/2022-03-12
+
+###
+GET http://localhost:3001/mixer/product/2022-03-09
+###
+
+GET http://localhost:3001/mixer/batch/2022-03-09
+###
+
+GET http://localhost:3001/getform/MIXER
+###
+
+GET http://localhost:3001/mixer/batch/procheck/39/1
+###
+
+GET http://localhost:3001/mixer/batch/2022-03-09
+###
+
+GET http://localhost:3001/mixer/batch/MIXER_CHECK/1
+###
+
+POST  http://localhost:3001/mixer/batch/procheck
+Content-Type: application/json
+
+{
+    "header_id" : 39,
+    "batch_regis_id" : 4,
+    "mixer_proc_chek_date" : "2022-03-13",
+    "mixer_proc_chek_shift" : "1",
+    "mixer_proc_chek_add_id" : 90
+}
+###
+
+POST  http://localhost:3001/mixer/batch/checklist
+Content-Type: application/json
+
+{
+    "mixer_proc_check_id" : 53,
+    "standar_form_id" : 2,
+    "standar_form_value" : 33
+}
+
+
+###
+GET http://localhost:3001/formula/1
+
+###
+PATCH  http://localhost:3001/formula/1
+Content-Type: application/json
+
+{
+    "batch_regis_prod_flag": "Y"
+}
+###
+GET http://localhost:3001/downtime
+###
+
+POST http://localhost:3001/downtime
+Content-Type: application/json
+
+{
+    "downtime_id" : 1,
+    "downtime_dept_id": 1,
+    "batch_regis_id": 1,
+    "downtime_type": "Mesin Hurung",
+    "downtime_start": "09:02:00",
+    "downtime_add_remark": "Mesin Giling Mati Total dan Listrik tidak terkoneksi",
+    "downtime_add_id": 1
+}
