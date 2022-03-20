@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-const db = new Sequelize('db_cpm', 'cpmapp', 'Asd12345', {
+const db = new Sequelize('db_cpm', 'root', 'Asd12345.', {
   host: 'localhost',
   dialect: 'mysql',
   logging: false,
