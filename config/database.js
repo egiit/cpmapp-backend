@@ -6,8 +6,14 @@ const db = new Sequelize('db_cpm', 'root', 'Asd12345.', {
   logging: false,
 });
 
-// const db = new Sequelize('db_cpm', 'egiw', 'Asd159789.', {
-//   host: '192.168.10.170',
+// const db = new Sequelize('db_cpm', 'root', '', {
+//   host: 'localhost',
+//   dialect: 'mysql',
+//   logging: false,
+// });
+
+// const db = new Sequelize('db_cpm', 'egipublic', 'Asd159789.', {
+//   host: '117.74.123.236',
 //   dialect: 'mysql',
 //   logging: false,
 // });
