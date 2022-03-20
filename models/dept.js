@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../config/database.js';
 
-import { DataTypes } from 'Sequelize';
+// import { DataTypes } from 'Sequelize';
 
 const Dept = db.define(
   'xref_dept',

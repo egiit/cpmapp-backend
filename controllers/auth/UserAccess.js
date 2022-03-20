@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { QueryTypes } from 'sequelize';
 
 import db from '../../config/database.js';
 import {
@@ -7,7 +7,7 @@ import {
   QueryMenuView,
 } from '../../models/userAcces.js';
 
-import { QueryTypes } from 'Sequelize'; //model user
+// import { QueryTypes } from 'Sequelize'; //model user
 
 //menuRole
 export const getUserAcces = async (req, res) => {

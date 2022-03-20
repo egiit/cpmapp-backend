@@ -1,9 +1,14 @@
 import { Sequelize } from 'sequelize';
 
-const db = new Sequelize('db_cpm', 'root', 'shi@123', {
+const db = new Sequelize('db_cpm', 'root', '', {
   host: 'localhost',
   dialect: 'mysql',
   logging: false,
 });
 
+// const db = new Sequelize('db_cpm', 'egiw', 'Asd159789.', {
+//   host: '192.168.10.170',
+//   dialect: 'mysql',
+//   logging: false,
+// });
 export default db;

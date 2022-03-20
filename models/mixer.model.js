@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../config/database.js';
 
-import { DataTypes } from 'Sequelize';
+// import { DataTypes } from 'Sequelize';
 
 export const QueryGetProduct = `SELECT DISTINCT b.product_id , c.product_code, c.product_name, d.IMAGE_PATH product_image
 FROM frml_batch_regis a 

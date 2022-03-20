@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { QueryTypes } from 'sequelize';
 
 import db from '../config/database.js';
 import {
@@ -9,7 +9,7 @@ import {
   QueryFormandValue,
 } from '../models/mixer.model.js';
 
-import { QueryTypes } from 'Sequelize'; //model user
+// import { QueryTypes } from 'Sequelize'; //model user
 
 // Ambil Product Mixer
 export const getProductMixer = async (req, res) => {

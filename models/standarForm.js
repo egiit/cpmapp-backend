@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../config/database.js';
 
-import { DataTypes } from 'Sequelize'; //type Query
+// import { DataTypes } from 'Sequelize'; //type Query
 
 export const QueryGetForm = db.define(
   'list_standar_form',
