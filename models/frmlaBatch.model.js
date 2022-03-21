@@ -18,6 +18,7 @@ const FormulaBatch = db.define(
     batch_regis_production_date: { type: DataTypes.DATEONLY },
     batch_regis_sequen: { type: DataTypes.STRING },
     batch_regis_mixing_code: { type: DataTypes.STRING },
+    batch_regis_qty: { type: DataTypes.DOUBLE },
     batch_regis_shift: { type: DataTypes.INTEGER },
     batch_regis_transfer_flag: { type: DataTypes.STRING },
     batch_regis_prod_flag: { type: DataTypes.STRING },
