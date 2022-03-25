@@ -8,7 +8,11 @@ export const Headers = db.define(
   //module user axces
   'list_header_form',
   {
-    header_id: { type: DataTypes.INTEGER, primaryKey: true },
+    header_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     header_prod_date: { type: DataTypes.DATEONLY },
     header_shift: { type: DataTypes.INTEGER },
     header_operator: { type: DataTypes.STRING },

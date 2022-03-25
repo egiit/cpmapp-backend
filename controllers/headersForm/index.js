@@ -18,7 +18,7 @@ export const getHeadersForm = async (req, res) => {
 export const createHeaderForm = async (req, res) => {
   try {
     const dataHead = req.body;
-    const findData = await Headers.findAll({
+    const findData = await Headers.findOne({
       where: {
         header_prod_date: dataHead.header_prod_date,
         header_dept_id: dataHead.header_dept_id,
@@ -30,13 +30,13 @@ export const createHeaderForm = async (req, res) => {
       const newHeader = await Headers.create(req.body);
       return res.json({
         item: newHeader,
-        message: 'User Access Added',
+        message: 'Header added',
       });
     }
 
     await Headers.update(dataHead, {
       where: {
-        header_id: findData[0].header_id,
+        header_id: findData.header_id,
       },
     });
     return res.json({
@@ -47,21 +47,21 @@ export const createHeaderForm = async (req, res) => {
   }
 };
 
-export const updateHeaderForm = async (req, res) => {
-  try {
-    const dataHeader = req.body;
-    await Headers.update(dataHeader, {
-      where: {
-        header_id: req.params.id,
-      },
-    });
-    res.json({
-      message: 'Headers Updated',
-    });
-  } catch (error) {
-    res.json({ message: error.message });
-  }
-};
+// export const updateHeaderForm = async (req, res) => {
+//   try {
+//     const dataHeader = req.body;
+//     await Headers.update(dataHeader, {
+//       where: {
+//         header_id: req.params.id,
+//       },
+//     });
+//     res.json({
+//       message: 'Headers Updated',
+//     });
+//   } catch (error) {
+//     res.json({ message: error.message });
+//   }
+// };
 
 // export const getShiftHeader = async (req, res) => {
 //   const shiftHead = await ShiftHeader.findOne({
