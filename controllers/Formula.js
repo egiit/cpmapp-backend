@@ -1,7 +1,13 @@
 import db from '../config/database.js';
+import { QueryTypes } from 'sequelize';
 
-import FormulaBatch from '../models/frmlaBatch.model.js';
+import {
+  FormulaBatch,
+  // QueryFrmlBatchChart,
+} from '../models/frmlaBatch.model.js';
+// import { QueryGetProduct } from '../models/mixer.model.js';
 
+//original formula batch sesuai table
 export const getFormulaBatch = async (req, res) => {
   try {
     const batchFormula = await FormulaBatch.findAll({
@@ -13,6 +19,7 @@ export const getFormulaBatch = async (req, res) => {
   }
 };
 
+//push flag transfer
 export const postFlagTransfer = async (req, res) => {
   try {
     const data = req.body;

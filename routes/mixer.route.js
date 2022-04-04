@@ -12,6 +12,11 @@ import {
   getMixFrmlparams,
   getMixFrmlvalue,
   pushMixFrmlVal,
+  getAllFrmlBatchEnd,
+  getBatchChart,
+  getSequenBatch,
+  getTimeProccess,
+  getMixMasterValue,
   // getMixFrmlWithValue,
 } from '../controllers/Mixing.js';
 
@@ -26,5 +31,11 @@ router.get('/frmla-params/:headerId/:productId', getMixFrmlparams);
 router.get('/frmla-params/value/:headerId/:productId', getMixFrmlvalue);
 router.post('/frmla-params', postMixFrmlCheck);
 router.post('/frmla-params/value', pushMixFrmlVal);
+
+router.get('/report/:date/:shiftId/:productId', getAllFrmlBatchEnd);
+router.get('/report/master/:date', getMixMasterValue);
+router.get('/report/product/:date/:shiftId/:productId', getBatchChart);
+router.get('/report/sequence/:date/:shiftId/:productId', getSequenBatch);
+router.get('/report/time/:btchregid/:start/:finish', getTimeProccess);
 
 export default router;

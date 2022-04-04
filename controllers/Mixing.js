@@ -11,6 +11,10 @@ import {
   MixerFrmlParams,
   QueryMixFrml,
   MixFrmlVal,
+  QueryRepProdForChart,
+  QueryRepBatch,
+  QueryTimeProccess,
+  QueryMixMstrValue,
 } from '../models/mixer.model.js';
 
 // import { QueryTypes } from 'Sequelize'; //model user
@@ -224,6 +228,158 @@ export const pushMixFrmlVal = async (req, res) => {
       },
     });
     return res.json({ message: 'data berhasil di Update', data: dataUp });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+//################################### MIXER Report API
+
+//ambil table frml_batch report
+export const getAllFrmlBatchEnd = async (req, res) => {
+  try {
+    const allData = await db.query(QueryRepBatch, {
+      replacements: {
+        date: req.params.date,
+        productId: req.params.productId,
+        shiftId: req.params.shiftId,
+      },
+      type: QueryTypes.SELECT,
+    });
+    res.json(allData);
+  } catch (error) {
+    res.json({ message: 'Data Tidak Ditemukan', error });
+  }
+};
+
+// Ambil Data untuk chart kombinasi dari Product dan Batch
+export const getBatchChart = async (req, res) => {
+  try {
+    let dataChart = []; //declare array empty untuk tampung
+    await db
+      .query(QueryRepProdForChart, {
+        //ambil data product
+        replacements: {
+          date: req.params.date,
+          productId: req.params.productId,
+          shiftId: req.params.shiftId,
+        },
+        type: QueryTypes.SELECT,
+      })
+      .then((prod) => {
+        // console.log(prod);
+        //lalu looping masukan ke penampung danbuat rangka name & data
+        prod.forEach((dataProd) => {
+          dataChart.push({
+            name: dataProd.product_name,
+            data: [],
+            id: dataProd.product_id,
+            mixer_proc_chek_shift: dataProd.mixer_proc_chek_shift,
+          });
+        });
+      })
+      .then(() => {
+        db.query(QueryRepBatch, {
+          //ambil data batch
+          replacements: {
+            date: req.params.date,
+            productId: req.params.productId,
+            shiftId: req.params.shiftId,
+          },
+          type: QueryTypes.SELECT,
+        })
+          .then((batch) => {
+            dataChart.forEach((prod) => {
+              batch.forEach((btch) => {
+                if (prod.id !== btch.product_id) {
+                  prod.data.push(null);
+                } else {
+                  prod.data.push(btch.Ttime);
+                }
+              });
+            });
+          })
+          .then(() => {
+            res.json(dataChart); //return berupa JSon
+          });
+      });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+export const getSequenBatch = async (req, res) => {
+  try {
+    let dataSequence = [];
+    await db
+      .query(QueryRepBatch, {
+        //ambil data batch
+        replacements: {
+          date: req.params.date,
+          productId: req.params.productId,
+          shiftId: req.params.shiftId,
+        },
+        type: QueryTypes.SELECT,
+      })
+      .then((response) => {
+        response.forEach((seq, i) => {
+          dataSequence.push(`${i + 1}(${seq.batch_regis_sequen})`);
+        });
+      })
+      .then(() => {
+        res.json(dataSequence);
+      });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+export const getTimeProccess = async (req, res) => {
+  try {
+    const { btchregid, start, finish } = req.params;
+    await ProCheck.findOne({
+      where: {
+        batch_regis_id: btchregid,
+      },
+    }).then((datbatc) => {
+      db.query(QueryTimeProccess, {
+        replacements: {
+          batchregisid: btchregid,
+          mixprocid: datbatc.dataValues.mixer_proc_chek_id,
+          timeStart: start,
+          timeFinish: finish,
+        },
+      }).then((data) => res.json(data[0]));
+    });
+
+    // res.json(proId);
+    // const proctime = await db.query(QueryTimeProccess, {
+    //   replacements: {
+    //     batchregisid: btchregid,
+    //     mixprocid: procid,
+    //     timeStart: start,
+    //     timeFinish: finish,
+    //   },
+    // });
+
+    // res.json(proctime[0]);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
+//controler Query Master Value
+
+export const getMixMasterValue = async (req, res) => {
+  try {
+    const dataMaster = await db.query(QueryMixMstrValue, {
+      replacements: {
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    res.json(dataMaster);
   } catch (error) {
     res.json({ message: error.message });
   }

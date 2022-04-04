@@ -15,6 +15,20 @@ export const getHeadersForm = async (req, res) => {
   }
 };
 
+export const getHeadersReport = async (req, res) => {
+  try {
+    const header = await Headers.findAll({
+      where: {
+        header_prod_date: req.params.date,
+      },
+      order: [['header_shift', 'ASC']],
+    });
+    res.json(header);
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
+
 export const createHeaderForm = async (req, res) => {
   try {
     const dataHead = req.body;
