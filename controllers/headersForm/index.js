@@ -20,6 +20,7 @@ export const getHeadersReport = async (req, res) => {
     const header = await Headers.findAll({
       where: {
         header_prod_date: req.params.date,
+        header_dept_id: req.params.deptid,
       },
       order: [['header_shift', 'ASC']],
     });

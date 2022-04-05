@@ -9,6 +9,7 @@ import headerRoute from './headerFrom.route.js';
 import mixerRoute from './mixer.route.js';
 import formulaRoute from './formula.route.js';
 import downtimeRoute from './downtime.route.js';
+import formingRoute from './forming.route.js';
 
 // import catchAsync from '../controllers/utils/catchAsync.js';
 import ExpressError from '../controllers/utils/ExpressError.js';
@@ -29,6 +30,7 @@ router.get('/token', refreshToken);
 router.use('/header', headerRoute);
 router.use('/mixer', mixerRoute);
 router.use('/formula', formulaRoute);
+router.use('/forming', formingRoute);
 router.use('/downtime', downtimeRoute);
 router.get('/getform/:dept', getForm);
 router.delete('/logout', Logout);

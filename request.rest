@@ -121,37 +121,39 @@ POST  http://localhost:3001/header
 Content-Type: application/json
 
 {
-    "header_prod_date": "2022-03-09",
-    "header_shift": 2,
-    "header_operator": "maman,jajang,dadang",
-    "header_leader": "monang",
-    "header_dept_id": 2,
-    "header_add_id": 2
+    "header_add_id": 90,
+"header_dept_id": 1,
+"header_id": 55,
+"header_leader": "maman",
+"header_operator": "jajang,maman",
+"header_prod_date": "2022-03-21",
+"header_shift": "2"
 }
 ###
-PATCH   http://localhost:3001/header/31
+POST   http://localhost:3001/header
 Content-Type: application/json
 
 {
-    "header_prod_date": "2022-03-09",
-    "header_shift": 2,
-    "header_operator": "sumin,jajang,dadang",
-    "header_leader": "monang",
-    "header_dept_id": 2,
-    "header_add_id": 2
+   "header_add_id": 90,
+"header_dept_id": 1,
+"header_leader": "monang",
+"header_operator": "maman,jajang",
+"header_prod_date": "2022-03-22",
+ "header_mod_id": 90,
+"header_shift": "1"
 }
 
 ###
-GET http://localhost:3001/header/90/2022-03-12
+GET http://localhost:3001/header/report/2022-03-25
 
 ###
-GET http://localhost:3001/mixer/product/2022-03-09
+GET http://localhost:3001/mixer/product/2022-03-22
 ###
 
 GET http://localhost:3001/mixer/batch/2022-03-09
 ###
 
-GET http://localhost:3001/getform/MIXER
+GET http://localhost:3001/getform/MIXER_CHECK
 ###
 
 GET http://localhost:3001/mixer/batch/procheck/39/1
@@ -211,3 +213,46 @@ Content-Type: application/json
     "downtime_add_remark": "Mesin Giling Mati Total dan Listrik tidak terkoneksi",
     "downtime_add_id": 1
 }
+
+###
+
+GET http://localhost:3001/mixer/frmla-params/value/54/9
+###
+
+POST http://localhost:3001/mixer/frmla-params
+Content-Type: application/json
+
+{
+    "mixer_frml_id" : null,
+	"standar_form_id" : 1,
+	"mixer_frml_params" : "CAI BUKUR",
+	"product_id" : 1,
+	"header_id" : 1,
+	"mixer_frml_add_id" : 1,
+	"mixer_frml_mod_id" : 1
+}
+
+####
+GET http://localhost:3001/formula/chart/2022-03-25
+####
+###Mixer Report Get Product Chart
+GET http://localhost:3001/mixer/report/product/2022-03-22/%%/9% 
+####
+###MIxer report get detail batch
+GET http://localhost:3001/mixer/report/2022-03-22/%%/%9%
+
+###
+###Mixer Report Get Sequence Data
+GET http://localhost:3001/mixer/report/sequence/2022-03-25/%2%/%
+
+####
+GET http://localhost:3001/mixer/report/sequence/2022-03-25/%%/%
+
+###
+GET http://localhost:3001/mixer/report/time/30/9/10
+
+###
+###
+GET http://localhost:3001/mixer/report/master/2022-03-22
+###
+GET http://localhost:3001/forming/product/2022-03-22

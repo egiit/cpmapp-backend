@@ -39,7 +39,7 @@ async () => {
 var whitelist = [
   'http://localhost:3000',
   'http://192.168.10.168:3000',
-  'http://117.74.123.236:3000',
+  'http://117.74.123.236/:3000',
 ];
 app.use(
   cors({
