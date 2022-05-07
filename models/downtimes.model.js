@@ -3,7 +3,7 @@ import db from '../config/database.js';
 
 // import { DataTypes } from 'Sequelize';
 
-const DowntimeModel = db.define(
+export const DowntimeModel = db.define(
   'prod_downtimes',
   {
     downtime_id: { type: DataTypes.BIGINT, primaryKey: true },
@@ -28,4 +28,7 @@ const DowntimeModel = db.define(
   }
 );
 
-export default DowntimeModel;
+export const QueryRepDowntime = `SELECT a.*, TIMEDIFF(a.downtime_end, a.downtime_start) AS ttime, b.product_name, c.batch_regis_sequen  From prod_downtimes a 
+LEFT JOIN product b ON a.product_id = b.product_id
+LEFT JOIN frml_batch_regis c ON a.batch_regis_id = c.batch_regis_id
+WHERE a.downtime_dept_id = :deptId AND a.downtime_add_date LIKE :date`;

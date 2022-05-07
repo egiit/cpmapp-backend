@@ -13,6 +13,7 @@ export const QueryGetForm = db.define(
     standar_form_param: { type: DataTypes.STRING },
     standar_form_tipe: { type: DataTypes.STRING },
     standar_form_initials: { type: DataTypes.STRING },
+    standar_form_unit: { type: DataTypes.STRING },
     standar_form_order: { type: DataTypes.BIGINT },
   },
   {

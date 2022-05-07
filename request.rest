@@ -236,17 +236,14 @@ Content-Type: application/json
 GET http://localhost:3001/formula/chart/2022-03-25
 ####
 ###Mixer Report Get Product Chart
-GET http://localhost:3001/mixer/report/product/2022-03-22/%%/9% 
+GET http://localhost:3001/mixer/report/product/2022-03-22
 ####
 ###MIxer report get detail batch
-GET http://localhost:3001/mixer/report/2022-03-22/%%/%9%
+GET http://localhost:3001/mixer/report/2022-03-22
 
 ###
 ###Mixer Report Get Sequence Data
-GET http://localhost:3001/mixer/report/sequence/2022-03-25/%2%/%
-
-####
-GET http://localhost:3001/mixer/report/sequence/2022-03-25/%%/%
+GET http://localhost:3001/mixer/report/sequence/2022-03-22
 
 ###
 GET http://localhost:3001/mixer/report/time/30/9/10
@@ -256,3 +253,90 @@ GET http://localhost:3001/mixer/report/time/30/9/10
 GET http://localhost:3001/mixer/report/master/2022-03-22
 ###
 GET http://localhost:3001/forming/product/2022-03-22
+###
+GET http://localhost:3001/forming/product-check
+###
+POST  http://localhost:3001/forming/product-check
+Content-Type: application/json
+
+{
+       "forming_prod_add_id": 93,
+        "forming_prod_cleaning": "25",
+        "forming_prod_date": "2022-04-06",
+        "forming_prod_id": null,
+        "forming_prod_mod_id": 93,
+        "forming_prod_reject_lantai": "2",
+        "forming_prod_reject_mesin": "1",
+        "forming_prod_reject_tot": 3,
+        "forming_prod_remark": null,
+        "forming_prod_setting": "28",
+        "forming_prod_start": "10:21",
+        "forming_prod_stop": "10:48",
+        "forming_prod_tdown": 53,
+        "forming_prod_ttime": "0:27",
+        "header_id": 61,
+        "product_id": 4
+}
+
+###
+GET http://localhost:3001/forming/batch/form/2022-03-22
+###
+POST http://localhost:3001/forming/batch
+Content-Type: application/json
+
+{
+        "forming_prod_id": null,
+        "batch_regis_id": 32,
+        "standar_form_id": 50,
+        "standar_form_value": "20:00"
+}
+
+
+###
+GET http://localhost:3001/forming/report/batch-value/2022-03-22
+
+###
+GET http://localhost:3001/oven/product-check/2022-03-22
+###
+GET http://localhost:3001/oven/batch/form/2022-03-22
+
+###
+POST  http://localhost:3001/oven/product-check
+Content-Type: application/json
+
+{
+        "oven_prod_id": null,
+        "product_id": 25,
+        "header_id": 55,
+        "oven_prod_date": "2022-03-20",
+        "oven_prod_start": "07:21",
+        "oven_prod_stop": "08:01",
+        "oven_prod_temp": "08:01",
+        "oven_prod_ttime": "12:15",
+        "oven_prod_warm_time": "01:48",
+        "oven_prod_remark": 53,
+        "oven_prod_add_id": 1,
+        "oven_prod_mod_id": 1
+}
+
+###
+POST http://localhost:3001/oven/batch-bridge
+Content-Type: application/json
+
+{
+    "oven_prod_batch_id" : 1,
+    "header_id" : 3,
+    "batch_regist_id" : 1,
+	"oven_prod_batch_finish": "22:00",
+	"oven_prod_batch_date": "2022-03-20",
+	"oven_prod_batch_add_id": 1,
+	"oven_prod_batch_mod_id": 1
+
+}
+
+###
+GET  http://localhost:3001/oven/batch-list/2022-03-22
+ 
+###
+GET  http://localhost:3001/oven/batch-bridge/32
+ 

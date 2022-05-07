@@ -1,5 +1,9 @@
-// import db from "../../config/database";
-import DowntimeModel from '../../models/downtimes.model.js';
+import db from '../../config/database.js';
+import { QueryTypes } from 'sequelize';
+import {
+  DowntimeModel,
+  QueryRepDowntime,
+} from '../../models/downtimes.model.js';
 
 // function get list downtime Per Dept per Header
 export const getDowntime = async (req, res) => {
@@ -8,6 +12,22 @@ export const getDowntime = async (req, res) => {
       where: {
         header_id: req.params.headerId,
       },
+    });
+    res.json(dataDowntime);
+  } catch (error) {
+    res.json({ massage: error.message });
+  }
+};
+
+//get downtime for report dept
+export const getDowntimeReport = async (req, res) => {
+  try {
+    const dataDowntime = await db.query(QueryRepDowntime, {
+      replacements: {
+        deptId: req.params.deptId,
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
     });
     res.json(dataDowntime);
   } catch (error) {
