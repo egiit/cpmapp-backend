@@ -2,6 +2,7 @@ import db from '../../config/database.js';
 import { QueryTypes } from 'sequelize';
 import {
   DowntimeModel,
+  QueryAllDowntime,
   QueryRepDowntime,
 } from '../../models/downtimes.model.js';
 
@@ -12,6 +13,21 @@ export const getDowntime = async (req, res) => {
       where: {
         header_id: req.params.headerId,
       },
+    });
+    res.json(dataDowntime);
+  } catch (error) {
+    res.json({ massage: error.message });
+  }
+};
+
+//get All downtime List
+export const getAllDowntime = async (req, res) => {
+  try {
+    const dataDowntime = await db.query(QueryAllDowntime, {
+      replacements: {
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
     });
     res.json(dataDowntime);
   } catch (error) {

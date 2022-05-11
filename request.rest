@@ -340,3 +340,6 @@ GET  http://localhost:3001/oven/batch-list/2022-03-22
 ###
 GET  http://localhost:3001/oven/batch-bridge/32
  
+
+###
+GET  http://localhost:3001/downtime/list/2022-03-22%25
