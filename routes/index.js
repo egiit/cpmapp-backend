@@ -1,5 +1,5 @@
 import express from 'express';
-import getDashboard from '../controllers/Dashboard.js';
+import dashboardsRouter from './dashboard.route.js';
 import userRoute from './user.route.js';
 import userAccesRoute from './userAccess.route.js';
 import { getDept, getDeptById } from '../controllers/setup/Dept.js';
@@ -20,7 +20,7 @@ import { getForm } from '../controllers/utils/formStandar.js';
 
 const router = express.Router();
 
-router.get('/', getDashboard);
+router.use('/dashboards', dashboardsRouter);
 router.use('/user', userRoute);
 router.get('/dept', getDept);
 router.get('/dept/:id', getDeptById);

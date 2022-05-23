@@ -129,6 +129,8 @@ export const postFormingDataBatch = async (req, res) => {
     const dataInput = await FormingBatchDetail.update(req.body, {
       where: {
         forming_prod_id: req.body.forming_prod_id,
+        batch_regis_id: req.body.batch_regis_id,
+        standar_form_id: req.body.standar_form_id,
       },
     });
 
