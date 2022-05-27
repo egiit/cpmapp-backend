@@ -8,6 +8,7 @@ import {
   QueryGetChart,
   QueryGetDistOutProd,
   QueryGetRejectDough,
+  QueryGetRejectDoughBatch,
   QueryGetRejectKeping,
   QueryPlanProdFg,
 } from '../models/dashboard.model.js';
@@ -226,10 +227,28 @@ export const getRejectTotal = async (req, res) => {
     const totalReject = totRejectDough + totRejectKeping;
 
     res.json({
+      dataDough,
+      dataKeping,
       rejectKeping: totRejectKeping,
       rejectDough: totRejectDough,
       totalReject: totalReject,
     });
+  } catch (error) {
+    res.json({ message: 'Data Reject Ditemukan', error });
+  }
+};
+
+//get reject dough Per Batch Per Dept
+export const getRejectPerBatch = async (req, res) => {
+  try {
+    const dataReBatch = await db.query(QueryGetRejectDoughBatch, {
+      replacements: {
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    res.json(dataReBatch);
   } catch (error) {
     res.json({ message: 'Data Reject Ditemukan', error });
   }

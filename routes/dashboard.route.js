@@ -5,6 +5,7 @@ import {
   getDashDataChart,
   getPlanFg,
   getProdFG,
+  getRejectPerBatch,
   getRejectTotal,
 } from '../controllers/Dashboard.js';
 const router = express.Router();
@@ -15,5 +16,6 @@ router.get('/planFG/:date', getPlanFg);
 router.get('/chartFG/:date/:flag', getDashDataChart);
 router.get('/prodFG/:date/:flag', getProdFG);
 router.get('/totReject/:date', getRejectTotal);
+router.get('/rejectPerBatch/:date', getRejectPerBatch);
 
 export default router;

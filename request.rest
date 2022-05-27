@@ -352,6 +352,6 @@ GET  http://localhost:3001/dashboards/chartBatch/2022-05-18
 ###
 GET  http://localhost:3001/dashboards/chartFG/2022-05-21/PRODUCTIONS
 ###
-GET  http://localhost:3001/dashboards/totReject/2022-05-19
+GET  http://localhost:3001/packing/dataproduksi/2022-05-19
 
 

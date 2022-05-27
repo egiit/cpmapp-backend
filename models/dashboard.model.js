@@ -64,9 +64,7 @@ export const QueryGetDistOutProd = `SELECT 'PROD' prod_flag, product_id, package
 	LEFT JOIN product b ON b.product_id = a.product_id
 	WHERE a.prod_package_date =  :date AND a.prod_package_flag= :flag
 	GROUP BY a.prod_package_shift, a.product_id, a.package_id
-	) a GROUP BY a.product_id, a.package_id;
-	
-				   `;
+	) a GROUP BY a.product_id, a.package_id`;
 
 export const QueryPlanProdFg = `SELECT *, 
 left(frml1, (LENGTH(frml1) - LENGTH((SUBSTRING_INDEX(frml1,'*', -1))) -1)) 
@@ -103,5 +101,43 @@ WHERE b.product_plan_date = :date AND c.weight_comp_id = 1
 
 //query get Dash Reject biskuit
 
-export const QueryGetRejectKeping = `SELECT a.* FROM prod_reject_biskuit a WHERE a.prod_package_date = :date`;
-export const QueryGetRejectDough = `SELECT a.* FROM prod_reject_dough a WHERE a.product_plan_date = :date`;
+export const QueryGetRejectKeping = `SELECT a.* , b.product_name FROM prod_reject_biskuit a 
+LEFT JOIN product b ON a.batch_id = b.product_id 
+WHERE a.prod_package_date = :date`;
+
+export const QueryGetRejectDough = `SELECT a.*,  b.product_name FROM prod_reject_dough a 
+LEFT JOIN product b ON a.batch_id = b.product_id
+WHERE a.product_plan_date = :date`;
+
+//reject dough perbatch
+export const QueryGetRejectDoughBatch = `SELECT o.product_plan_id, o.product_plan_date, n.batch_regis_id, o.product_id, p.product_name, 
+sa.reject_dough reject_dough_mixer, ta.reject_dough reject_dough_forming
+FROM frml_batch_regis n
+LEFT JOIN product_batch m ON n.batch_id = m.batch_id
+LEFT JOIN product_plan o ON o.product_plan_id = n.product_plan_id 
+LEFT JOIN product p ON o.product_id = p.product_id
+LEFT JOIN (
+SELECT  'MIXER' AS DEPT, e.product_plan_date AS product_plan_date,
+e.product_plan_id AS product_plan_id,e.product_id AS product_id,d.batch_id AS batch_id,
+d.batch_regis_id AS batch_regis_id,f.weight_comp_id AS weight_comp_id,
+(CASE WHEN (f.weight_comp_id = 1) THEN 3 ELSE 7 END) AS batch_comp_id,a.standar_form_value AS reject_dough
+FROM (((((db_cpm.mixer_proc_chek_detail a
+LEFT JOIN db_cpm.mixer_proc_chek b ON((a.mixer_proc_check_id = b.mixer_proc_chek_id)))
+LEFT JOIN db_cpm.list_standar_form c ON((a.standar_form_id = c.standar_form_id)))
+LEFT JOIN db_cpm.frml_batch_regis d ON((b.batch_regis_id = d.batch_regis_id)))
+LEFT JOIN db_cpm.product_plan e ON((d.product_plan_id = e.product_plan_id)))
+LEFT JOIN db_cpm.product_batch f ON((d.batch_id = f.batch_id)))
+WHERE (a.standar_form_id = 17 AND e.product_plan_date = :date) 
+)sa ON sa.product_plan_id =  o.product_plan_id AND sa.batch_regis_id = n.batch_regis_id
+LEFT JOIN (
+SELECT 'FORMING' AS DEPT, d.product_plan_date AS product_plan_date,d.product_plan_id AS product_plan_id,d.product_id AS product_id,
+c.batch_id AS batch_id,c.batch_regis_id AS batch_regis_id,e.weight_comp_id AS weight_comp_id, 
+(CASE WHEN (e.weight_comp_id = 1) THEN 3 ELSE 7 END) AS batch_comp_id, b.standar_form_value AS reject_dough
+FROM ((((db_cpm.forming_prod a
+LEFT JOIN db_cpm.forming_prod_check_detail b ON((a.forming_prod_id = b.forming_prod_id AND b.standar_form_id =70))) 
+LEFT JOIN db_cpm.frml_batch_regis c ON((b.batch_regis_id = c.batch_regis_id)))
+LEFT JOIN db_cpm.product_plan d ON((c.product_plan_id = d.product_plan_id)))
+LEFT JOIN db_cpm.product_batch e ON((c.batch_id = e.batch_id))) WHERE d.product_plan_date = :date
+)ta on ta.product_plan_id =  o.product_plan_id AND ta.batch_regis_id = n.batch_regis_id
+WHERE o.product_plan_date = :date
+ORDER BY n.batch_regis_id`;

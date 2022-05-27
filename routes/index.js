@@ -10,6 +10,7 @@ import mixerRoute from './mixer.route.js';
 import formulaRoute from './formula.route.js';
 import downtimeRoute from './downtime.route.js';
 import formingRoute from './forming.route.js';
+import packingRoute from './packing.route.js';
 import ovenRoute from './oven.route.js';
 
 // import catchAsync from '../controllers/utils/catchAsync.js';
@@ -35,6 +36,7 @@ router.use('/forming', formingRoute);
 router.use('/oven', ovenRoute);
 router.use('/downtime', downtimeRoute);
 router.get('/getform/:dept', getForm);
+router.use('/packing', packingRoute);
 router.delete('/logout', Logout);
 
 router.all('*', (req, res, next) => {
