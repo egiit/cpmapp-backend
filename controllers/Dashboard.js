@@ -11,6 +11,7 @@ import {
   QueryGetRejectDoughBatch,
   QueryGetRejectKeping,
   QueryPlanProdFg,
+  QueryTimeProd,
 } from '../models/dashboard.model.js';
 
 //control GetActual Batch
@@ -251,5 +252,54 @@ export const getRejectPerBatch = async (req, res) => {
     res.json(dataReBatch);
   } catch (error) {
     res.json({ message: 'Data Reject Ditemukan', error });
+  }
+};
+
+//get  Prod Time Table
+export const getProdDetailTime = async (req, res) => {
+  try {
+    const dataProdTotTime = await db.query(QueryTimeProd, {
+      replacements: {
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    res.json(dataProdTotTime);
+  } catch (error) {
+    res.json({ message: 'Data Prod Time Ditemukan', error });
+  }
+};
+
+//get  Prod Time Chart
+export const getProdTimeChart = async (req, res) => {
+  try {
+    const dataProdTotTime = await db.query(QueryTimeProd, {
+      replacements: {
+        date: req.params.date,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    const series = [
+      {
+        name: 'Mixer',
+        data: Array.from(dataProdTotTime.map((x) => x.mix_in_hour)),
+      },
+      {
+        name: 'Forming',
+        data: Array.from(dataProdTotTime.map((x) => x.forming_in_hour)),
+      },
+      {
+        name: 'Oven',
+        data: Array.from(dataProdTotTime.map((x) => x.oven_in_hour)),
+      },
+    ];
+
+    const categories = Array.from(dataProdTotTime.map((x) => x.product_name));
+
+    res.json({ series, categories });
+  } catch (error) {
+    res.json({ message: 'Data Chart Prod Time Ditemukan', error });
   }
 };

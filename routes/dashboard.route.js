@@ -4,7 +4,9 @@ import {
   getDashActualBatch,
   getDashDataChart,
   getPlanFg,
+  getProdDetailTime,
   getProdFG,
+  getProdTimeChart,
   getRejectPerBatch,
   getRejectTotal,
 } from '../controllers/Dashboard.js';
@@ -17,5 +19,7 @@ router.get('/chartFG/:date/:flag', getDashDataChart);
 router.get('/prodFG/:date/:flag', getProdFG);
 router.get('/totReject/:date', getRejectTotal);
 router.get('/rejectPerBatch/:date', getRejectPerBatch);
+router.get('/ProdTime/:date', getProdDetailTime);
+router.get('/chartProdTime/:date', getProdTimeChart);
 
 export default router;

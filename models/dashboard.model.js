@@ -141,3 +141,87 @@ LEFT JOIN db_cpm.product_batch e ON((c.batch_id = e.batch_id))) WHERE d.product_
 )ta on ta.product_plan_id =  o.product_plan_id AND ta.batch_regis_id = n.batch_regis_id
 WHERE o.product_plan_date = :date
 ORDER BY n.batch_regis_id`;
+
+export const QueryTimeProd = `SELECT fa.*, ROUND((TIME_TO_SEC(fa.mix_time)/(3600)), 2) mix_in_hour, ROUND((TIME_TO_SEC(fa.forming_time)/(3600)), 2) forming_in_hour,
+ROUND((TIME_TO_SEC(fa.oven_prod_ttime)/(3600)), 2) oven_in_hour
+FROM 
+	(SELECT n.mixer_proc_chek_date, n.header_shift,n.product_id, p.product_name, n.start_time mix_start_time, n.end_time mix_end_time, 
+	TIMEDIFF(n.end_time, n.start_time) mix_time,
+	 m.forming_prod_start, m.forming_prod_stop, m.forming_prod_ttime, m.forming_tdowntime, m.forming_time, o.oven_prod_start, o.oven_prod_temp , 
+	 o.oven_prod_stop, o.oven_prod_ttime, TIMEDIFF(o.oven_prod_stop,n.start_time) total_time_prod
+	FROM (
+		SELECT  na.mixer_proc_chek_date, na.header_shift, na.product_id,  MAX(na.transfer_time) end_time, MIN(na.start_time) start_time
+		FROM 
+		(
+			SELECT a.mixer_proc_chek_id, c.header_shift, e.product_id,a.mixer_proc_chek_date,  a.transfer_time tfr,
+			time(TIME_FORMAT(time(a.transfer_time), '%H:%i' )) transfer_time, b.standar_form_id,time(TIME_FORMAT(TIME(b.standar_form_value), '%H:%i' )) start_time
+			 FROM  mixer_proc_chek a 
+			LEFT JOIN mixer_proc_chek_detail b ON a.mixer_proc_chek_id = b.mixer_proc_check_id AND b.standar_form_id = 3
+			LEFT JOIN list_header_form c ON a.header_id = c.header_id 
+			LEFT JOIN frml_batch_regis d ON a.batch_regis_id = d.batch_regis_id
+			LEFT JOIN product_batch e ON d.batch_id = e.batch_id
+			LEFT JOIN product f ON e.product_id = f.product_id
+			WHERE a.mixer_proc_chek_date = :date
+		) na
+		GROUP BY na.header_shift, na.mixer_proc_chek_date, na.product_id
+	) n 
+	LEFT JOIN (
+		SELECT ma.forming_prod_date, ma.header_shift, ma.product_id, ma.forming_prod_start, ma.forming_prod_stop, 
+			ma.forming_prod_ttime, ma.forming_tdowntime, 
+			IFNULL(TIMEDIFF(ma.forming_prod_ttime, ma.forming_tdowntime), ma.forming_prod_ttime)  forming_time
+			FROM(
+				SELECT  a.forming_prod_date,  b.header_shift, a.product_id, a.forming_prod_start, 
+				a.forming_prod_stop, a.forming_prod_ttime, a.forming_prod_cleaning, a.forming_prod_setting,
+				SEC_TO_TIME(a.forming_prod_tdown*60) forming_tdowntime FROM forming_prod a 
+				LEFT JOIN list_header_form b ON a.header_id = b.header_id
+				WHERE a.forming_prod_date = :date
+			) ma
+			
+		)m ON m.forming_prod_date = n.mixer_proc_chek_date AND m.header_shift = n.header_shift AND m.product_id = n.product_id
+	LEFT JOIN (
+			SELECT  a.oven_prod_date,  b.header_shift, a.product_id, a.oven_prod_start, 
+			a.oven_prod_temp , a.oven_prod_stop, a.oven_prod_ttime
+			FROM oven_prod a 
+			LEFT JOIN list_header_form b ON a.header_id = b.header_id
+			WHERE a.oven_prod_date = :date
+	) o ON o.oven_prod_date = n.mixer_proc_chek_date AND o.header_shift = n.header_shift AND o.product_id = n.product_id
+	LEFT JOIN product p ON n.product_id = p.product_id
+) fa`;
+
+// export const QueryTimeProd = `SELECT n.mixer_proc_chek_date, n.header_shift, n.start_time mix_start_time, n.end_time mix_end_time,
+// TIMEDIFF(n.end_time, n.start_time) mix_time,
+//  m.forming_prod_start, m.forming_prod_stop, m.forming_prod_ttime, m.forming_tdowntime, o.oven_prod_temp ,
+// m.forming_time, o.oven_prod_stop, o.oven_prod_ttime
+// FROM (
+// 	SELECT  na.mixer_proc_chek_date, na.header_shift, MAX(na.transfer_time) end_time, MIN(na.start_time) start_time
+// 	FROM
+// 	(
+// 		SELECT a.mixer_proc_chek_id, c.header_shift, a.mixer_proc_chek_date,  a.transfer_time tfr,
+// 		time(TIME_FORMAT(time(a.transfer_time), '%H:%i' )) transfer_time, b.standar_form_id,time(TIME_FORMAT(TIME(b.standar_form_value), '%H:%i' )) start_time
+// 		 FROM  mixer_proc_chek a
+// 		LEFT JOIN mixer_proc_chek_detail b ON a.mixer_proc_chek_id = b.mixer_proc_check_id AND b.standar_form_id = 3
+// 		LEFT JOIN list_header_form c ON a.header_id = c.header_id
+// 		WHERE a.mixer_proc_chek_date = :date
+// 	) na
+// 	GROUP BY na.header_shift, na.mixer_proc_chek_date
+// ) n
+// LEFT JOIN (
+// 		SELECT ma.forming_prod_date, ma.header_shift, ma.forming_prod_start, ma.forming_prod_stop,
+// 		ma.forming_prod_ttime, ma.forming_tdowntime,
+// 		TIMEDIFF(ma.forming_prod_ttime, ma.forming_tdowntime) forming_time
+// 		FROM(
+// 			SELECT  a.forming_prod_date,  b.header_shift,  a.forming_prod_start,
+// 			a.forming_prod_stop, a.forming_prod_ttime, a.forming_prod_cleaning, a.forming_prod_setting,
+// 			SEC_TO_TIME(a.forming_prod_tdown*60) forming_tdowntime FROM forming_prod a
+// 			LEFT JOIN list_header_form b ON a.header_id = b.header_id
+// 			WHERE a.forming_prod_date = :date
+// 		) ma
+
+// 	)m ON m.forming_prod_date = n.mixer_proc_chek_date AND m.header_shift = n.header_shift
+// LEFT JOIN (
+// 		SELECT  a.oven_prod_date,  b.header_shift, a.oven_prod_start,
+// 		a.oven_prod_temp , a.oven_prod_stop, a.oven_prod_ttime
+// 		FROM oven_prod a
+// 		LEFT JOIN list_header_form b ON a.header_id = b.header_id
+// 		WHERE a.oven_prod_date = :date
+// ) o ON o.oven_prod_date = n.mixer_proc_chek_date AND o.header_shift = n.header_shift`;
